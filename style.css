@@ -23,3 +23,16 @@ img, picture, video, canvas, svg {
 input, button, textarea, select {
   font: inherit;
 }
+
+body {
+  background-color: gray;
+  display: flex;
+  align-items: center;
+}
+
+#board-container {
+  background-color: black;
+  margin: 0 auto;
+  width: 28vw;
+  height: 28vw;
+}
