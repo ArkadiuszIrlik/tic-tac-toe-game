@@ -116,4 +116,5 @@ const gameController = (function () {
     currentPlayers[1].dataset.marker = availableMarkers[0];
   }
 
+  return {startGame, addPlayer};
 })();
