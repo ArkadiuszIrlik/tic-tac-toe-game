@@ -34,6 +34,8 @@ const gameController = (function () {
   }
 
   const _createBoard = (parameters) => {
+    const boardContainer = document.createElement('div');
+    boardContainer.classList.add('board-container');
     const emptySquare = _createBoardSquare();
     const board = [];
 
@@ -42,9 +44,10 @@ const gameController = (function () {
       for (let column = 0; column < parameters.columns; column++) {
         const squareInstance = emptySquare.cloneNode();
         board[row].push(squareInstance);
-        displayController.addSquare(squareInstance);
+        boardContainer.appendChild(squareInstance);
       }
     }
+    displayController.addBoard(boardContainer);
 
     return board;
   }
