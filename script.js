@@ -119,7 +119,7 @@ const gameController = (function () {
     currentPlayers[1].dataset.marker = availableMarkers[0];
   }
 
-  return {startGame, addPlayer};
+  return {startGame, addPlayer, currentPlayers};
 })();
 
 const displayController = (function() {
@@ -135,8 +135,34 @@ const displayController = (function() {
         displayLeaderboard);
   }
 
-  const hideLastScreen = () => {
-    lastScreen.classList.toggle('hidden');
+  const displayAddPlayerScreen = () => {
+    hideLastScreen();
+    const addPlayerScreen = document.getElementById('add-player');
+    lastScreen = addPlayerScreen;
+    addPlayerScreen.classList.toggle('hidden');
+    addPlayerScreen.querySelector('h3').textContent = `PLAYER ${
+      gameController.currentPlayers.length + 1}`;
+    addPlayerScreen.querySelector('button[name="log-in"]').addEventListener('click',
+        displayLogInScreen);
+    addPlayerScreen.querySelector('button[name="create-profile"]').addEventListener('click',
+        displayCreateProfileScreen);
   }
-  return {displayMainMenu}
+
+  const displayLogInScreen = () => {
+
+  }
+
+  const displayCreateProfileScreen = () => {
+
+  }
+
+  const displayGameTitle = () => {
+
+  }
+
+  const hideLastScreen = () => {
+    if (lastScreen) {
+    lastScreen.classList.toggle('hidden');}
+  }
+  return {displayMainMenu, displayAddPlayerScreen}
 })();
