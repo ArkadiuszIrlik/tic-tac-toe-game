@@ -121,3 +121,22 @@ const gameController = (function () {
 
   return {startGame, addPlayer};
 })();
+
+const displayController = (function() {
+  let lastScreen;
+  const displayMainMenu = () => {
+    hideLastScreen();
+    const mainMenu = document.getElementById('main-menu');
+    lastScreen = mainMenu;
+    mainMenu.classList.toggle('hidden');
+    mainMenu.querySelector('button[name="new-game"]').addEventListener('click',
+        displayAddPlayerScreen);
+    mainMenu.querySelector('button[name="leaderboard"]').addEventListener('click',
+        displayLeaderboard);
+  }
+
+  const hideLastScreen = () => {
+    lastScreen.classList.toggle('hidden');
+  }
+  return {displayMainMenu}
+})();
