@@ -20,6 +20,42 @@
       <button type="button" class="menu-button" name="log-in">LOG IN</button>
       <button type="button" class="menu-button" name="create-profile">CREATE PROFILE</button>
     </div>
+    <div id="create-profile" class="hidden">
+      <h3>PLAYER 1</h3>
+      <div class="input-container">
+        <label for="username-input">NAME</label>
+        <h3 class="missing-name hidden">ENTER A NAME</h3>
+        <div class="outline">
+        </div>
+        <input type="text" id="username-input" class="menu-button"
+           name="username-input" placeholder="USERNAME" maxlength="16">
+        <h3 class="avatar-header">AVATAR</h3>
+        <h3 class="missing-avatar hidden">PICK AN AVATAR</h3>
+        <div id="avatar-selection" class="menu-button">
+          <label for="avatar1">
+            <input type="radio" name="avatar-selection" id="avatar1" value="avatar1">
+            <img src="./assets/avatar1.jpg" alt="avatar1">
+          </label>
+          <label for="avatar2">
+            <input type="radio" name="avatar-selection" id="avatar2" value="avatar2">
+            <img src="./assets/avatar2.jpg" alt="avatar2">
+          </label>
+          <label for="avatar3">
+            <input type="radio" name="avatar-selection" id="avatar3" value="avatar3">
+            <img src="./assets/avatar3.jpg" alt="avatar3">
+          </label>
+          <label for="avatar4">
+            <input type="radio" name="avatar-selection" id="avatar4" value="avatar4">
+            <img src="./assets/avatar4.jpg" alt="avatar4">
+          </label>
+          <label for="avatar5">
+            <input type="radio" name="avatar-selection" id="avatar5" value="avatar5">
+            <img src="./assets/avatar5.jpg" alt="avatar5">
+          </label>  
+        </div>
+      </div>
+      <button type="button" class="menu-button" name="finish">FINISH</button>
+    </div>
   </div>
 </body>
 </html>

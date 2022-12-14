@@ -153,6 +153,48 @@ const displayController = (function() {
   }
 
   const displayCreateProfileScreen = () => {
+    hideLastScreen();
+    const createProfileScreen = document.getElementById('create-profile');
+    lastScreen = createProfileScreen;
+    createProfileScreen.classList.toggle('hidden');
+    createProfileScreen.querySelector('h3').textContent = `PLAYER ${
+      gameController.currentPlayers.length + 1}`;
+    createProfileScreen.querySelector('button[name="finish"]').addEventListener('click',
+        createProfile);
+  }
+
+  const createProfile = () => {
+    const createProfileScreen = document.getElementById('create-profile');
+    const usernameInput = createProfileScreen.querySelector('#username-input');
+    const avatarSelection = createProfileScreen.querySelector('input[type="radio"]:checked');
+    let inputIsValid = true;
+    if (usernameInput.value == '') {
+      createProfileScreen.querySelector('.missing-name').classList.remove('hidden');
+      inputIsValid = false;
+    } else {
+      createProfileScreen.querySelector('.missing-name').classList.add('hidden');
+    }
+    if (avatarSelection == null) {
+      createProfileScreen.querySelector('.missing-avatar').classList.remove('hidden');
+      inputIsValid = false;
+    } else {
+      createProfileScreen.querySelector('.missing-avatar').classList.add('hidden');
+    }
+    if (inputIsValid == false) {
+      return;
+    } else {
+      gameController.addPlayer(Player(usernameInput.value, avatarSelection.value));
+      usernameInput.value = '';
+      avatarSelection.checked = false;
+      if (gameController.currentPlayers.length == 1) {
+        displayAddPlayerScreen();
+      } else {
+        displayPreGameScreen();
+      }
+    }
+  }
+
+  const displayLeaderboard = () => {
 
   }
 
@@ -166,3 +208,5 @@ const displayController = (function() {
   }
   return {displayMainMenu, displayAddPlayerScreen}
 })();
+
+displayController.displayMainMenu();
