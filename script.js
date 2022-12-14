@@ -126,6 +126,7 @@ const displayController = (function() {
   let lastScreen;
   const displayMainMenu = () => {
     hideLastScreen();
+    displayGameTitle();
     const mainMenu = document.getElementById('main-menu');
     lastScreen = mainMenu;
     mainMenu.classList.toggle('hidden');
@@ -199,7 +200,11 @@ const displayController = (function() {
   }
 
   const displayGameTitle = () => {
+    document.getElementById('game-title').classList.remove('hidden');
+  }
 
+  const hideGameTitle = () => {
+    document.getElementById('game-title').classList.add('hidden');
   }
 
   const hideLastScreen = () => {
