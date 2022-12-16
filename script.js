@@ -6,6 +6,7 @@ const Player = function(name, avatar) {
     name,
     avatar,
     marker: '',
+    color: '',
     addWin,
     getWins,
   }
@@ -55,8 +56,10 @@ const gameController = (function () {
   const startGame = () => {
     _gameBoard = _createBoard(_gameParameters);
     _assignRandomMarkers();
+    _assignRandomColors();
     activePlayer = currentPlayers[Math.floor(Math.random() * 2)];
-    _startNewTurn();
+    displayController.displayPreGameScreen();
+    setTimeout(_startNewTurn, 5000);
   }
 
   const _startNewTurn = () => {
@@ -99,7 +102,10 @@ const gameController = (function () {
     displayController.displayWinner(activePlayer);
     activePlayer = null;
     _gameBoard = [];
-    currentPlayer.forEach(player => player.dataset.marker = '');
+    currentPlayer.forEach(player => {
+      player.marker = '';
+      player.color = '';
+    });
   }
 
   const addPlayer = (player) => {
@@ -114,9 +120,17 @@ const gameController = (function () {
 
   const _assignRandomMarkers = () => {
     const availableMarkers = ['cross', 'circle'];
-    currentPlayers[0].dataset.marker = availableMarkers.splice(
+    currentPlayers[0].marker = availableMarkers.splice(
       Math.floor(Math.random() * 2), 1)[0];
-    currentPlayers[1].dataset.marker = availableMarkers[0];
+    currentPlayers[1].marker = availableMarkers[0];
+  }
+
+  const _assignRandomColors = () => {
+    const availableColors = ['a', 'b'];
+    currentPlayers[0].color = availableColors.splice(
+      Math.floor(Math.random() * availableColors.length), 1)[0];
+    currentPlayers[1].color = availableColors.splice(
+      Math.floor(Math.random() * availableColors.length), 1)[0];
   }
 
   return {startGame, addPlayer, currentPlayers};
@@ -124,6 +138,14 @@ const gameController = (function () {
 
 const displayController = (function() {
   let lastScreen;
+  let _gameBoard; 
+  const markers = {
+    cross: document.querySelector('template').content.querySelector(
+      '.marker-cross'),
+    circle: document.querySelector('template').content.querySelector(
+      '.marker-circle'),
+  }
+
   const displayMainMenu = () => {
     hideLastScreen();
     displayGameTitle();
@@ -190,9 +212,26 @@ const displayController = (function() {
       if (gameController.currentPlayers.length == 1) {
         displayAddPlayerScreen();
       } else {
-        displayPreGameScreen();
+        gameController.startGame();
       }
     }
+  }
+
+  const displayPreGameScreen = () => {
+    hideLastScreen();
+    hideGameTitle();
+    const preGameScreen = document.getElementById('pre-game');
+    lastScreen = preGameScreen;
+    preGameScreen.classList.toggle('hidden');
+    const playerCards = preGameScreen.querySelectorAll('.player-card');
+    playerCards.forEach((card, index) => {
+      const currentPlayer = gameController.currentPlayers[index];
+      card.classList.add(`player-color-${currentPlayer.color}`);
+      card.querySelector('img').src = `./assets/${currentPlayer.avatar}.jpg`;
+      card.querySelector('.player-marker-background').appendChild(markers[
+          currentPlayer.marker].cloneNode(true));
+      card.querySelector('.player-name').textContent = currentPlayer.name;
+    })
   }
 
   const displayLeaderboard = () => {
@@ -211,7 +250,12 @@ const displayController = (function() {
     if (lastScreen) {
     lastScreen.classList.toggle('hidden');}
   }
-  return {displayMainMenu, displayAddPlayerScreen}
+
+  const addBoard = (boardDiv) => {
+    _gameBoard = boardDiv;
+  }
+
+  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, addBoard}
 })();
 
 displayController.displayMainMenu();

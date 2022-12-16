@@ -9,6 +9,67 @@
   <title>Tic-Tac-Toe</title>
 </head>
 <body>
+  <template>
+    <div class="marker marker-circle">
+      <svg fill="green" class="marker-image" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id='player-color-a' y1='1'>
+            <stop stop-color='#44DED3'/>
+            <stop offset='.091' stop-color='#3BDCC7'/>
+            <stop offset='.182' stop-color='#37D9BB'/>
+            <stop offset='.273' stop-color='#38D6AD'/>
+            <stop offset='.364' stop-color='#3DD39F'/>
+            <stop offset='.455' stop-color='#32CD9C'/>
+            <stop offset='.546' stop-color='#25C799'/>
+            <stop offset='.636' stop-color='#14C196'/>
+            <stop offset='.727' stop-color='#00B69C'/>
+            <stop offset='.818' stop-color='#00AA9F'/>
+            <stop offset='.909' stop-color='#009D9F'/>
+            <stop offset='1' stop-color='#07919B'/>
+          </linearGradient>
+          <linearGradient id='player-color-b' x1='1' x2='0' y2='1'>
+            <stop stop-color='#871794'/>
+            <stop offset='.25' stop-color='#811D9D'/>
+            <stop offset='.5' stop-color='#7923A5'/>
+            <stop offset='.75' stop-color='#6F29AE'/>
+            <stop offset='1' stop-color='#622FB7'/>
+          </linearGradient>
+        </defs>
+        <circle cx="50%" cy="50%" r="49.5%" mask="url(#rmvCir)" />
+        <mask id="rmvCir">
+            <circle cx="50%" cy="50%" r="49.5%" fill="white"/>
+            <circle cx="50%" cy="50%" r="38%" fill="black"/>
+        </mask>
+      </svg>
+    </div>
+    <div class="marker marker-cross">
+      <svg class="marker-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" overflow="visible" stroke="blue" stroke-width="11%" stroke-linecap="round">
+        <linearGradient id='player-color-a' y1='1'>
+          <stop stop-color='#44DED3'/>
+          <stop offset='.091' stop-color='#3BDCC7'/>
+          <stop offset='.182' stop-color='#37D9BB'/>
+          <stop offset='.273' stop-color='#38D6AD'/>
+          <stop offset='.364' stop-color='#3DD39F'/>
+          <stop offset='.455' stop-color='#32CD9C'/>
+          <stop offset='.546' stop-color='#25C799'/>
+          <stop offset='.636' stop-color='#14C196'/>
+          <stop offset='.727' stop-color='#00B69C'/>
+          <stop offset='.818' stop-color='#00AA9F'/>
+          <stop offset='.909' stop-color='#009D9F'/>
+          <stop offset='1' stop-color='#07919B'/>
+        </linearGradient>
+        <linearGradient id='player-color-b' x1='1' x2='0' y2='1'>
+          <stop stop-color='#871794'/>
+          <stop offset='.25' stop-color='#811D9D'/>
+          <stop offset='.5' stop-color='#7923A5'/>
+          <stop offset='.75' stop-color='#6F29AE'/>
+          <stop offset='1' stop-color='#622FB7'/>
+        </linearGradient>
+        <line x1="15%" y1="15%" x2="85%" y2="85%" />
+        <line x1="85%" y2="85%" x2="15%" y1="15%"/>
+     </svg>   
+    </div>
+  </template>
   <div class="menu-container">
     <h1 id="game-title" class="hidden">TIC TAC TOE</h1>
     <div id="main-menu" class="hidden">
@@ -55,6 +116,34 @@
         </div>
       </div>
       <button type="button" class="menu-button" name="finish">FINISH</button>
+    </div>
+    <div id="pre-game" class="hidden">
+      <h3>GET READY</h3>
+      <div class="card-container">
+        <div class="player-card">
+          <div class="player-icon">
+            <img src="./assets/avatar-placeholder.png" alt="player avatar image">
+            <div class="player-marker-background">
+              <!-- javascript adds player.marker SVG here -->
+            </div>
+          </div>
+          <p class="player-name">
+            <!-- javascript inject name -->
+          </p>
+        </div>
+        <h3>VS</h3>
+        <div class="player-card">
+          <div class="player-icon">
+            <img src="./assets/avatar-placeholder.png" alt="player avatar image">
+            <div class="player-marker-background">
+              <!-- javascript adds player.marker SVG here -->
+            </div>
+          </div>
+          <p class="player-name">
+            <!-- javascript inject name -->
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </body>
