@@ -410,7 +410,7 @@ input[type="radio"]:checked::before {
 }
 
 .board-square > .marker {
-  /* filter: drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.35)); */
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.35));
 }
 
 .turn-timer {

@@ -142,19 +142,21 @@ const gameController = (function () {
 const displayController = (function() {
   let lastScreen;
   let _gameBoard; 
+  const template = document.querySelector('template').content;
+  const menuContainer = document.querySelector('.menu-container');
   const markers = {
-    cross: document.querySelector('template').content.querySelector(
+    cross: template.querySelector(
       '.marker-cross'),
-    circle: document.querySelector('template').content.querySelector(
+    circle: template.querySelector(
       '.marker-circle'),
   }
 
   const displayMainMenu = () => {
     hideLastScreen();
     displayGameTitle();
-    const mainMenu = document.getElementById('main-menu');
+    const mainMenu = template.getElementById('main-menu').cloneNode(true);
     lastScreen = mainMenu;
-    mainMenu.classList.toggle('hidden');
+    menuContainer.appendChild(mainMenu);
     mainMenu.querySelector('button[name="new-game"]').addEventListener('click',
         displayAddPlayerScreen);
     mainMenu.querySelector('button[name="leaderboard"]').addEventListener('click',
@@ -163,9 +165,9 @@ const displayController = (function() {
 
   const displayAddPlayerScreen = () => {
     hideLastScreen();
-    const addPlayerScreen = document.getElementById('add-player');
+    const addPlayerScreen = template.getElementById('add-player').cloneNode(true);
     lastScreen = addPlayerScreen;
-    addPlayerScreen.classList.toggle('hidden');
+    menuContainer.appendChild(addPlayerScreen);
     addPlayerScreen.querySelector('h1').textContent = `PLAYER ${
       gameController.currentPlayers.length + 1}`;
     addPlayerScreen.querySelector('button[name="log-in"]').addEventListener('click',
@@ -180,9 +182,9 @@ const displayController = (function() {
 
   const displayCreateProfileScreen = () => {
     hideLastScreen();
-    const createProfileScreen = document.getElementById('create-profile');
+    const createProfileScreen = template.getElementById('create-profile').cloneNode(true);
     lastScreen = createProfileScreen;
-    createProfileScreen.classList.toggle('hidden');
+    menuContainer.appendChild(createProfileScreen);
     createProfileScreen.querySelector('h1').textContent = `PLAYER ${
       gameController.currentPlayers.length + 1}`;
     createProfileScreen.querySelector('button[name="finish"]').addEventListener('click',
@@ -223,9 +225,9 @@ const displayController = (function() {
   const displayPreGameScreen = () => {
     hideLastScreen();
     hideGameTitle();
-    const preGameScreen = document.getElementById('pre-game');
+    const preGameScreen = template.getElementById('pre-game').cloneNode(true);
     lastScreen = preGameScreen;
-    preGameScreen.classList.toggle('hidden');
+    menuContainer.appendChild(preGameScreen);
     const playerCards = preGameScreen.querySelectorAll('.player-card');
     playerCards.forEach((card, index) => {
       const currentPlayer = gameController.currentPlayers[index];
@@ -240,9 +242,9 @@ const displayController = (function() {
 
   const displayGameScreen = () => {
     hideLastScreen();
-    const gameScreen = document.getElementById('game');
+    const gameScreen = template.getElementById('game').cloneNode(true);
     lastScreen = gameScreen;
-    gameScreen.classList.toggle('hidden');
+    menuContainer.appendChild(gameScreen);
     gameScreen.querySelector('.center-container').appendChild(_gameBoard);
     gameScreen.querySelectorAll('.player-tab').forEach((tab, index) => {
       const currentPlayer = gameController.currentPlayers[index];
@@ -334,16 +336,17 @@ const displayController = (function() {
   }
 
   const displayGameTitle = () => {
-    document.getElementById('game-title').classList.remove('hidden');
+    menuContainer.appendChild(template.getElementById('game-title').cloneNode(true));
   }
 
   const hideGameTitle = () => {
-    document.getElementById('game-title').classList.add('hidden');
+    document.getElementById('game-title').remove();
   }
 
   const hideLastScreen = () => {
     if (lastScreen) {
-    lastScreen.classList.toggle('hidden');}
+    lastScreen.remove();
+  }
   }
 
   const addBoard = (boardDiv) => {
