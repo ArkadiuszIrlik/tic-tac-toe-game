@@ -11,7 +11,7 @@
 <body>
   <template>
     <div class="marker marker-circle">
-      <svg fill="green" class="marker-image" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <svg class="marker-image" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" stroke-width="11.5%" stroke="green">
         <defs>
           <linearGradient id='player-color-a' y1='1'>
             <stop stop-color='#44DED3'/>
@@ -35,15 +35,11 @@
             <stop offset='1' stop-color='#622FB7'/>
           </linearGradient>
         </defs>
-        <circle cx="50%" cy="50%" r="49.5%" mask="url(#rmvCir)" />
-        <mask id="rmvCir">
-            <circle cx="50%" cy="50%" r="49.5%" fill="white"/>
-            <circle cx="50%" cy="50%" r="38%" fill="black"/>
-        </mask>
+        <circle cx="50%" cy="50%" r="43.5%" fill="none" />
       </svg>
     </div>
     <div class="marker marker-cross">
-      <svg class="marker-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" overflow="visible" stroke="blue" stroke-width="11%" stroke-linecap="round">
+      <svg class="marker-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" stroke="blue" stroke-width="11%" stroke-linecap="round">
         <linearGradient id='player-color-a' y1='1'>
           <stop stop-color='#44DED3'/>
           <stop offset='.091' stop-color='#3BDCC7'/>
@@ -77,12 +73,12 @@
       <button type="button" class="menu-button" name="leaderboard">LEADERBOARD</button>
     </div>
     <div id="add-player" class="hidden">
-      <h3></h3>
+      <h1 class="menu-header"></h1>
       <button type="button" class="menu-button" name="log-in">LOG IN</button>
       <button type="button" class="menu-button" name="create-profile">CREATE PROFILE</button>
     </div>
     <div id="create-profile" class="hidden">
-      <h3>PLAYER 1</h3>
+      <h1 class="menu-header"></h1>
       <div class="input-container">
         <label for="username-input">NAME</label>
         <h3 class="missing-name hidden">ENTER A NAME</h3>
@@ -90,7 +86,7 @@
         </div>
         <input type="text" id="username-input" class="menu-button"
            name="username-input" placeholder="USERNAME" maxlength="16">
-        <h3 class="avatar-header">AVATAR</h3>
+        <h1 class="avatar-header menu-header">AVATAR</h1>
         <h3 class="missing-avatar hidden">PICK AN AVATAR</h3>
         <div id="avatar-selection" class="menu-button">
           <label for="avatar1">
@@ -118,7 +114,7 @@
       <button type="button" class="menu-button" name="finish">FINISH</button>
     </div>
     <div id="pre-game" class="hidden">
-      <h3>GET READY</h3>
+      <h2 class="menu-header">GET READY</h2>
       <div class="card-container">
         <div class="player-card">
           <div class="player-icon">
@@ -131,7 +127,7 @@
             <!-- javascript inject name -->
           </p>
         </div>
-        <h3>VS</h3>
+        <h1 class="menu-header">VS</h1>
         <div class="player-card">
           <div class="player-icon">
             <img src="./assets/avatar-placeholder.png" alt="player avatar image">
@@ -142,6 +138,59 @@
           <p class="player-name">
             <!-- javascript inject name -->
           </p>
+        </div>
+      </div>
+    </div>
+    <div id="game" class="hidden">
+      <div class="left-container">
+        <div class="players-panel">
+          <div class="player-tab">
+            <div class="player-icon">
+              <img src="./assets/avatar-placeholder.png" alt="player avatar image">
+              <div class="player-marker-background">
+                <!-- javascript adds player.marker SVG here -->
+              </div>
+          </div>
+            <p class="player-name"></p>
+            <img src="./assets/trophy-bw-small.png" alt="trophy">
+            <p class="win-counter"></p>
+          </div>
+          <div class="player-tab">
+            <div class="player-icon">
+              <img src="./assets/avatar-placeholder.png" alt="player avatar image">
+              <div class="player-marker-background">
+                <!-- javascript adds player.marker SVG here -->
+              </div>
+          </div>
+            <p class="player-name"></p>
+            <img src="./assets/trophy-bw-small.png" alt="trophy">
+            <p class="win-counter"></p>
+          </div>
+        </div>
+      </div>
+      <div class="center-container">
+        <h3 id="turn-counter" class="menu-header"></h3>
+        <div class="turn-timer hidden">
+          <img src="./assets/timer.png" alt="timer image">
+          <div class="timer-bar-background">
+            <div class="timer-bar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="right-container">
+        <div class="current-player">
+          <h3 class="menu-header">PLAYER TURN</h3>
+          <div class="player-card">
+            <div class="player-icon">
+              <img src="./assets/avatar-placeholder.png" alt="player avatar image">
+              <div class="player-marker-background">
+                <!-- javascript adds player.marker SVG here -->
+              </div>
+            </div>
+            <p class="player-name">
+              <!-- javascript inject name -->
+            </p>
+          </div>
         </div>
       </div>
     </div>

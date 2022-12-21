@@ -30,7 +30,6 @@ const gameController = (function () {
     const emptySquare = document.createElement('div');
     emptySquare.dataset.marker = '';
     emptySquare.classList.add('board-square', 'active');
-    emptySquare.addEventListener('click', _endTurn);
     return emptySquare;
   }
 
@@ -44,6 +43,7 @@ const gameController = (function () {
       board.push([]);
       for (let column = 0; column < parameters.columns; column++) {
         const squareInstance = emptySquare.cloneNode();
+        squareInstance.addEventListener('click', _endTurn, {once: true});
         board[row].push(squareInstance);
         boardContainer.appendChild(squareInstance);
       }
@@ -64,13 +64,16 @@ const gameController = (function () {
 
   const _startNewTurn = () => {
     _turnCounter++;
-    displayController.displayNewTurn(activePlayer, _turnCounter);
+    displayController.displayNewTurn(activePlayer, _turnCounter, _gameParameters.turnTimer);
     _turnTimerID = _startTurnTimer();
   }
 
   const _endTurn = (event) => {
     _stopTurnTimer();
     event.target.dataset.marker = activePlayer.marker;
+    const markerImage = displayController.markers[activePlayer.marker].cloneNode(true);
+    markerImage.classList.add(`player-color-${activePlayer.color}`);
+    event.target.appendChild(markerImage);
     event.target.classList.remove('active');
     if (isWinner()) {
       _endGame();
@@ -163,7 +166,7 @@ const displayController = (function() {
     const addPlayerScreen = document.getElementById('add-player');
     lastScreen = addPlayerScreen;
     addPlayerScreen.classList.toggle('hidden');
-    addPlayerScreen.querySelector('h3').textContent = `PLAYER ${
+    addPlayerScreen.querySelector('h1').textContent = `PLAYER ${
       gameController.currentPlayers.length + 1}`;
     addPlayerScreen.querySelector('button[name="log-in"]').addEventListener('click',
         displayLogInScreen);
@@ -180,7 +183,7 @@ const displayController = (function() {
     const createProfileScreen = document.getElementById('create-profile');
     lastScreen = createProfileScreen;
     createProfileScreen.classList.toggle('hidden');
-    createProfileScreen.querySelector('h3').textContent = `PLAYER ${
+    createProfileScreen.querySelector('h1').textContent = `PLAYER ${
       gameController.currentPlayers.length + 1}`;
     createProfileScreen.querySelector('button[name="finish"]').addEventListener('click',
         createProfile);
@@ -232,6 +235,98 @@ const displayController = (function() {
           currentPlayer.marker].cloneNode(true));
       card.querySelector('.player-name').textContent = currentPlayer.name;
     })
+    setTimeout(displayGameScreen, 5000);
+  }
+
+  const displayGameScreen = () => {
+    hideLastScreen();
+    const gameScreen = document.getElementById('game');
+    lastScreen = gameScreen;
+    gameScreen.classList.toggle('hidden');
+    gameScreen.querySelector('.center-container').appendChild(_gameBoard);
+    gameScreen.querySelectorAll('.player-tab').forEach((tab, index) => {
+      const currentPlayer = gameController.currentPlayers[index];
+      tab.classList.add(`player-color-${currentPlayer.color}`);
+      tab.querySelector('.player-icon > img').src = `./assets/${currentPlayer.avatar}.jpg`;
+      tab.querySelector('.player-marker-background').appendChild(markers[
+          currentPlayer.marker].cloneNode(true));
+      tab.querySelector('.player-name').textContent = currentPlayer.name;
+      tab.querySelector('.win-counter').textContent = currentPlayer.getWins();
+    })
+  }
+
+  const displayNewTurn = (currentPlayer, turnNumber, turnTimer) => {
+    const gameScreen = document.getElementById('game');
+    document.getElementById('turn-counter').textContent = `TURN: ${turnNumber}`;
+    const card = gameScreen.querySelector('.current-player .player-card');
+    card.classList.add(`player-color-${currentPlayer.color}`);
+    card.querySelector('img').src = `./assets/${currentPlayer.avatar}.jpg`;
+    card.querySelector('.player-marker-background').appendChild(markers[
+        currentPlayer.marker].cloneNode(true));
+    card.querySelector('.player-name').textContent = currentPlayer.name;
+    if (turnTimer != Infinity) {
+      displayTurnTimer(turnTimer);
+    }
+  }
+
+  const displayTurnTimer = (turnTimer) => {
+    const timerBar = document.getElementById('game').querySelector('.timer-bar');
+    let timeLeft = turnTimer;
+    const interval = 10;
+    let percentageLeft;
+    const timerStart = Date.now();
+    setTimeout(() => {
+      timerBar.style.borderRadius = '15px 7px 7px 15px';
+    }, 100);
+    let intervalID = setInterval(updateTimer, interval);
+    function updateTimer() { 
+      console.log(timeLeft, percentageLeft)
+      timeLeft = turnTimer + timerStart - Date.now();
+      if (timeLeft <= 0) {
+        timerBar.style.width = 0;
+        clearInterval(intervalID);
+      }
+      percentageLeft = timeLeft / turnTimer * 100;
+      timerBar.style.width = `${percentageLeft}%`;
+      switch(true) {
+        case percentageLeft >= 90:
+          console.log('switching')
+          timerBar.style.backgroundColor = `var(--time-left-90)`;
+          break;
+        case percentageLeft >= 80:
+          timerBar.style.backgroundColor = `var(--time-left-80)`;
+          break;
+        case percentageLeft >= 70:
+          timerBar.style.backgroundColor = `var(--time-left-70)`;
+          break;
+        case percentageLeft >= 60:
+          timerBar.style.backgroundColor = `var(--time-left-60)`;
+          break;
+        case percentageLeft >= 50:
+          timerBar.style.backgroundColor = `var(--time-left-50)`;
+          break;
+        case percentageLeft >= 40:
+          timerBar.style.backgroundColor = `var(--time-left-40)`;
+          break;
+        case percentageLeft >= 30:
+          timerBar.style.backgroundColor = `var(--time-left-30)`;
+          break;
+        case percentageLeft >= 20:
+          timerBar.style.backgroundColor = `var(--time-left-20)`;
+          break;
+        case percentageLeft >= 10:
+          timerBar.style.backgroundColor = `var(--time-left-10)`;
+          break;
+      }
+    }
+  }
+
+  const hideTurnTimer = () => {
+    document.getElementById('game').querySelector('.turn-timer').classList.add('.hidden');
+  }
+
+  const displayPlayerTimeout = () => {
+    console.log('timed out');
   }
 
   const displayLeaderboard = () => {
@@ -255,7 +350,9 @@ const displayController = (function() {
     _gameBoard = boardDiv;
   }
 
-  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, addBoard}
+  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, addBoard, displayNewTurn, displayTurnTimer, displayPlayerTimeout, markers}
 })();
 
 displayController.displayMainMenu();
+
+// displayController.displayTurnTimer(5000);
