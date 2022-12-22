@@ -59,7 +59,10 @@ const gameController = (function () {
     _assignRandomColors();
     activePlayer = currentPlayers[Math.floor(Math.random() * 2)];
     displayController.displayPreGameScreen();
-    setTimeout(_startNewTurn, 5000);
+    setTimeout(() => {
+      displayController.displayGameScreen(_gameParameters.turnTimer);
+      _startNewTurn();
+    }, 5000);
   }
 
   const _startNewTurn = () => {
@@ -237,15 +240,15 @@ const displayController = (function() {
           currentPlayer.marker].cloneNode(true));
       card.querySelector('.player-name').textContent = currentPlayer.name;
     })
-    setTimeout(displayGameScreen, 5000);
   }
 
-  const displayGameScreen = () => {
+  const displayGameScreen = (turnTimer) => {
     hideLastScreen();
     const gameScreen = template.getElementById('game').cloneNode(true);
     lastScreen = gameScreen;
     menuContainer.appendChild(gameScreen);
-    gameScreen.querySelector('.center-container').appendChild(_gameBoard);
+    const centerContainer = gameScreen.querySelector('.center-container');
+    centerContainer.insertBefore(_gameBoard, centerContainer.querySelector('.turn-timer'));
     gameScreen.querySelectorAll('.player-tab').forEach((tab, index) => {
       const currentPlayer = gameController.currentPlayers[index];
       tab.classList.add(`player-color-${currentPlayer.color}`);
@@ -255,6 +258,9 @@ const displayController = (function() {
       tab.querySelector('.player-name').textContent = currentPlayer.name;
       tab.querySelector('.win-counter').textContent = currentPlayer.getWins();
     })
+    if (turnTimer != Infinity) {
+      document.getElementById('game').querySelector('.turn-timer').classList.remove('hidden');
+    }
   }
 
   const displayNewTurn = (currentPlayer, turnNumber, turnTimer) => {
@@ -273,6 +279,7 @@ const displayController = (function() {
 
   const displayTurnTimer = (turnTimer) => {
     const timerBar = document.getElementById('game').querySelector('.timer-bar');
+    timerBar.style.cssText = '';
     let timeLeft = turnTimer;
     const interval = 10;
     let percentageLeft;
@@ -282,10 +289,9 @@ const displayController = (function() {
     }, 100);
     let intervalID = setInterval(updateTimer, interval);
     function updateTimer() { 
-      console.log(timeLeft, percentageLeft)
       timeLeft = turnTimer + timerStart - Date.now();
       if (timeLeft <= 0) {
-        timerBar.style.width = 0;
+        timerBar.style.width = '0';
         clearInterval(intervalID);
       }
       percentageLeft = timeLeft / turnTimer * 100;
@@ -328,7 +334,7 @@ const displayController = (function() {
   }
 
   const displayPlayerTimeout = () => {
-    console.log('timed out');
+    // alert('timed out');
   }
 
   const displayLeaderboard = () => {
@@ -353,7 +359,7 @@ const displayController = (function() {
     _gameBoard = boardDiv;
   }
 
-  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, addBoard, displayNewTurn, displayTurnTimer, displayPlayerTimeout, markers}
+  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers}
 })();
 
 displayController.displayMainMenu();
