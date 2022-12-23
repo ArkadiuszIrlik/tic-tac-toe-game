@@ -17,7 +17,7 @@ const gameController = (function () {
     columns: 3,
     rows: 3,
     winningStreak: 3,
-    turnTimer: 5000,
+    turnTimer: 10000,
   }
 
   let _gameBoard;
@@ -384,7 +384,7 @@ const displayController = (function() {
       timeLeft = turnTimer + timerStart - Date.now();
       if (timeLeft <= 0) {
         timerBar.style.width = '0';
-        clearInterval(intervalID);
+        clearInterval(_turnTimerID);
       }
       percentageLeft = timeLeft / turnTimer * 100;
       timerBar.style.width = `${percentageLeft}%`;
