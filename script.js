@@ -359,10 +359,13 @@ const displayController = (function() {
     const gameScreen = document.getElementById('game');
     document.getElementById('turn-counter').textContent = `TURN: ${turnNumber}`;
     const card = gameScreen.querySelector('.current-player .player-card');
-    card.classList.add(`player-color-${currentPlayer.color}`);
+    card.classList = `player-card player-color-${currentPlayer.color}`;
     card.querySelector('img').src = `./assets/${currentPlayer.avatar}.jpg`;
-    card.querySelector('.player-marker-background').appendChild(markers[
-        currentPlayer.marker].cloneNode(true));
+    const markerBackground = card.querySelector('.player-marker-background');
+    if (markerBackground.lastElementChild) {
+    markerBackground.removeChild(markerBackground.lastElementChild);
+    };
+    markerBackground.appendChild(markers[currentPlayer.marker].cloneNode(true));
     card.querySelector('.player-name').textContent = currentPlayer.name;
   }
   
