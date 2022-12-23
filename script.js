@@ -17,7 +17,7 @@ const gameController = (function () {
     columns: 3,
     rows: 3,
     winningStreak: 3,
-    turnTimer: 10000,
+    turnTimer: Infinity,
   }
 
   let _gameBoard;

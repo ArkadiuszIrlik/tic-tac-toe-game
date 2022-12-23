@@ -238,6 +238,7 @@ input[type="radio"]:checked+label {
 }
 
 .player-icon {
+  flex-shrink: 0;
   margin: 0 auto;
   width: 150px;
   height: 150px;
@@ -347,6 +348,7 @@ input[type="radio"]:checked+label {
 }
 
 .players-panel {
+  width: max-content;
   margin-top: 190px;
   margin-left: 15px;
   display: flex;
@@ -355,7 +357,7 @@ input[type="radio"]:checked+label {
 }
 
 .player-tab {
-  width: 300px;
+  min-width: 300px;
   height: 75px;
   background-color: var(--color-off-white);
   border-radius: 10px;
@@ -380,6 +382,7 @@ input[type="radio"]:checked+label {
 .player-tab > img {
   height: 50%;
   width: auto;
+  margin-left: 10px;
   margin-right: 5px;
   filter: invert(17%) sepia(63%) saturate(3591%) hue-rotate(281deg) brightness(86%) contrast(103%);
 }
@@ -467,6 +470,9 @@ input[type="radio"]:checked+label {
 }
 
 .current-player {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   margin-bottom: 180px;
 }
 
