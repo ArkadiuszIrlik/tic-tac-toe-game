@@ -189,23 +189,23 @@ input#username-input:focus{
 }
 
 input[type="radio"] {
-  width: 0;
-  height: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
 }
 
 #avatar-selection > label {
   display: flex;
-  position: relative;
   height: 65px;
   width: 65px;
 }
 
-input[type="radio"]:checked::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  width: 65px;
-  height: 65px;
+input[type="radio"]:checked+label {
   background-image: var(--green-gradient);
   border-radius: 50%;
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
@@ -213,6 +213,7 @@ input[type="radio"]:checked::before {
 
 #avatar-selection img {
   height: 55px;
+  width: auto;
   align-self: center;
   margin: 0 auto;
   position: relative;
@@ -334,7 +335,7 @@ input[type="radio"]:checked::before {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 20%;
+  /* padding-top: 20vh; */
 }
 
 .right-container {
