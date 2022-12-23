@@ -111,7 +111,7 @@ const gameController = (function () {
     displayController.displayWinner(activePlayer);
     activePlayer = null;
     _gameBoard = [];
-    currentPlayer.forEach(player => {
+    currentPlayers.forEach(player => {
       player.marker = '';
       player.color = '';
     });
@@ -390,7 +390,6 @@ const displayController = (function() {
       timerBar.style.width = `${percentageLeft}%`;
       switch(true) {
         case percentageLeft >= 90:
-          console.log('switching')
           timerBar.style.backgroundColor = `var(--time-left-90)`;
           break;
         case percentageLeft >= 80:
@@ -419,6 +418,10 @@ const displayController = (function() {
           break;
       }
     }
+  }
+
+  const displayWinner = (player) => {
+
   }
 
   const stopTurnTimer = () => {
@@ -455,7 +458,7 @@ const displayController = (function() {
     _gameBoard = boardDiv;
   }
 
-  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers, displayTurnTimer, stopTurnTimer}
+  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers, displayTurnTimer, stopTurnTimer, displayWinner}
 })();
 
 displayController.displayMainMenu();
