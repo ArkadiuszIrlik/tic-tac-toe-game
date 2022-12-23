@@ -67,12 +67,13 @@ const gameController = (function () {
 
   const _startNewTurn = () => {
     _turnCounter++;
-    displayController.displayNewTurn(activePlayer, _turnCounter, _gameParameters.turnTimer);
+    displayController.displayNewTurn(activePlayer, _turnCounter);
     _turnTimerID = _startTurnTimer();
   }
 
   const _endTurn = (event) => {
     _stopTurnTimer();
+    displayController.stopTurnTimer();
     event.target.dataset.marker = activePlayer.marker;
     const markerImage = displayController.markers[activePlayer.marker].cloneNode(true);
     markerImage.classList.add(`player-color-${activePlayer.color}`);
@@ -95,7 +96,8 @@ const gameController = (function () {
     if (_gameParameters.turnTimer == Infinity) {
       return null;
     } else {
-    setTimeout(_failPlayerTimeout, _gameParameters.turnTimer);
+      displayController.displayTurnTimer(_gameParameters.turnTimer);
+      return setTimeout(_failPlayerTimeout, _gameParameters.turnTimer);
     }
   }
 
@@ -104,6 +106,7 @@ const gameController = (function () {
   }
 
   const _endGame = () => {
+    alert(activePlayer.name + 'wins!')
     activePlayer.addWin();
     displayController.displayWinner(activePlayer);
     activePlayer = null;
@@ -232,7 +235,8 @@ const gameController = (function () {
 
 const displayController = (function() {
   let lastScreen;
-  let _gameBoard; 
+  let _gameBoard;
+  let _turnTimerID;
   const template = document.querySelector('template').content;
   const menuContainer = document.querySelector('.menu-container');
   const markers = {
@@ -351,7 +355,7 @@ const displayController = (function() {
     }
   }
 
-  const displayNewTurn = (currentPlayer, turnNumber, turnTimer) => {
+  const displayNewTurn = (currentPlayer, turnNumber) => {
     const gameScreen = document.getElementById('game');
     document.getElementById('turn-counter').textContent = `TURN: ${turnNumber}`;
     const card = gameScreen.querySelector('.current-player .player-card');
@@ -360,11 +364,8 @@ const displayController = (function() {
     card.querySelector('.player-marker-background').appendChild(markers[
         currentPlayer.marker].cloneNode(true));
     card.querySelector('.player-name').textContent = currentPlayer.name;
-    if (turnTimer != Infinity) {
-      displayTurnTimer(turnTimer);
-    }
   }
-
+  
   const displayTurnTimer = (turnTimer) => {
     const timerBar = document.getElementById('game').querySelector('.timer-bar');
     timerBar.style.cssText = '';
@@ -375,7 +376,7 @@ const displayController = (function() {
     setTimeout(() => {
       timerBar.style.borderRadius = '15px 7px 7px 15px';
     }, 100);
-    let intervalID = setInterval(updateTimer, interval);
+    _turnTimerID = setInterval(updateTimer, interval);
     function updateTimer() { 
       timeLeft = turnTimer + timerStart - Date.now();
       if (timeLeft <= 0) {
@@ -417,6 +418,10 @@ const displayController = (function() {
     }
   }
 
+  const stopTurnTimer = () => {
+    clearInterval(_turnTimerID);
+  }
+
   const hideTurnTimer = () => {
     document.getElementById('game').querySelector('.turn-timer').classList.add('.hidden');
   }
@@ -447,7 +452,7 @@ const displayController = (function() {
     _gameBoard = boardDiv;
   }
 
-  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers}
+  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers, displayTurnTimer, stopTurnTimer}
 })();
 
 displayController.displayMainMenu();
