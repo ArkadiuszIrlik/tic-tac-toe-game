@@ -78,7 +78,7 @@ const gameController = (function () {
     markerImage.classList.add(`player-color-${activePlayer.color}`);
     event.target.appendChild(markerImage);
     event.target.classList.remove('active');
-    if (isWinner()) {
+    if (_isWinner()) {
       _endGame();
     } else {
       _changeActivePlayer();
@@ -112,6 +112,94 @@ const gameController = (function () {
       player.marker = '';
       player.color = '';
     });
+  }
+
+  const _isWinner = () => {
+    const _checkHorizontal = () => {
+      for (let row = 0; row < _gameBoard.length; row++) {
+        let currentStreak = 0;
+        let previousMarker = _gameBoard[row][0];
+        _gameBoard[row].forEach(square => {
+          if (square.dataset.marker == previousMarker && previousMarker != '') {
+            currentStreak++;
+            if (currentStreak == _gameParameters.winningStreak) {
+              return true;
+            }   
+          } else {
+            currentStreak = 1;
+            previousMarker = square.dataset.marker;
+          }
+        })
+      }
+      return false;
+    }
+
+    const _checkVertical = () => {
+      for (let column = 0; column < _gameBoard[0].length; column++) {
+        let currentStreak = 0;
+        let previousMarker = _gameBoard[0][column];
+        for (let row = 0; row < _gameBoard.length; row++) {
+          let square = _gameBoard[row][column];
+          if (square.dataset.marker == previousMarker && previousMarker != '') {
+            currentStreak++;
+            if (currentStreak == _gameParameters.winningStreak) {
+              return true;
+            }   
+          } else {
+            currentStreak = 1;
+            previousMarker = square.dataset.marker;
+          }
+        }
+      }
+      return false;
+    }
+
+    const _checkDiagonal = () => {
+      for (let row = 0; row < _gameBoard.length; row++) {
+        for (let column = 0; column < _gameBoard[row].length; column++) {
+          if (_gameBoard[row][column].dataset.marker) {
+            let previousMarker = _gameBoard[row][column].dataset.marker;
+            let currentStreak = 1;
+            let i = 1;
+            try {
+              while(_gameBoard[row+i][column+i]) {
+                if (_gameBoard[row+i][column+i].dataset.marker == previousMarker) {
+                  currentStreak++;
+                  i++;
+                } else {
+                  break;
+                }
+              }}
+            catch {}
+            if (currentStreak >= _gameParameters.winningStreak) {
+              return true;
+            }
+
+            currentStreak = 1;
+            i = 1;
+            try {
+              while(_gameBoard[row+i][column-i]) {
+                if (_gameBoard[row+i][column-i].dataset.marker == previousMarker) {
+                  currentStreak++;
+                  i++;
+                } else {
+                  break;
+                }
+              }}
+            catch {}
+            if (currentStreak >= _gameParameters.winningStreak) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    if (_checkHorizontal() || _checkVertical() || _checkDiagonal()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   const addPlayer = (player) => {
