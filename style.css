@@ -480,3 +480,41 @@ input[type="radio"]:checked+label {
   margin-bottom: 50px;
 }
 
+#victory {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#victory .trophy {
+  filter: invert(93%) sepia(0%) saturate(600%) hue-rotate(157deg) brightness(93%) contrast(82%);
+  max-width: 300px;
+  height: auto;
+  grid-area: 1 / 2;
+  align-self: end;
+}
+
+#victory .menu-header {
+  text-align: center;
+}
+
+#victory .container {
+  /* width: 100vh; */
+  height: 60%;
+  /* display: flex;
+  align-items: flex-end; */
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) min-content minmax(150px, 1fr);
+  margin-bottom: 40px;
+}
+
+#victory .player-icon {
+  margin: 0;
+  grid-area: 1 / 3;
+  place-self: end start;
+  position: relative;
+  left: -10%;
+  max-width: 150px;
+  max-height: 150px;
+}
