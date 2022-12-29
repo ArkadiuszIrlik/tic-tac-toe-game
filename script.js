@@ -53,10 +53,12 @@ const gameController = (function () {
     return board;
   }
 
-  const startGame = () => {
+  const startGame = ({isRematch = false} = {}) => {
     _gameBoard = _createBoard(_gameParameters);
-    _assignRandomMarkers();
-    _assignRandomColors();
+    if (isRematch == false) {
+      _assignRandomMarkers();  
+      _assignRandomColors();
+    }
     activePlayer = currentPlayers[Math.floor(Math.random() * 2)];
     displayController.displayPreGameScreen();
     setTimeout(() => {
@@ -110,10 +112,10 @@ const gameController = (function () {
     displayController.displayVictoryScreen(activePlayer);
     activePlayer = null;
     _gameBoard = [];
-    currentPlayers.forEach(player => {
-      player.marker = '';
-      player.color = '';
-    });
+  }
+
+  const resetPlayers = () => {
+    currentPlayers = [];
   }
 
   const _isWinner = () => {
@@ -440,9 +442,10 @@ const displayController = (function() {
     }, 2500)
     document.getElementById('rematch-button-container').querySelector(
         'button[name="rematch"]').addEventListener('click', () => {
-          gameController.startGame()});
+          gameController.startGame({isRematch: true})});
     document.getElementById('rematch-button-container').querySelector(
         'button[name="main-menu"]').addEventListener('click', () => {
+          gameController.resetPlayers();
           displayMainMenu()});
     playerCard.addEventListener('animationend', () => {
       document.getElementById('rematch-button-container').classList.remove('hidden');
@@ -481,7 +484,10 @@ const displayController = (function() {
   }
 
   const hideGameTitle = () => {
-    document.getElementById('game-title').remove();
+    const gameTitle = document.getElementById('game-title');
+    if (gameTitle) {
+      gameTitle.remove();
+    }
   }
 
   const hideLastScreen = () => {
@@ -499,13 +505,13 @@ const displayController = (function() {
 
 // displayController.displayVictoryScreen();
 
-// displayController.displayMainMenu();
+displayController.displayMainMenu();
 
 // displayController.displayTurnTimer(5000);
-displayController.displayVictoryScreen(
-{
-  "name": "awdawd",
-  "avatar": "avatar4",
-  "marker": "circle",
-  "color": "a"
-})
+// displayController.displayVictoryScreen(
+// {
+//   "name": "awdawd",
+//   "avatar": "avatar4",
+//   "marker": "circle",
+//   "color": "a"
+// })
