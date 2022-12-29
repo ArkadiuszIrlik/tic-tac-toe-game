@@ -106,9 +106,8 @@ const gameController = (function () {
   }
 
   const _endGame = () => {
-    alert(activePlayer.name + 'wins!')
     activePlayer.addWin();
-    displayController.displayWinner(activePlayer);
+    displayController.displayVictoryScreen(activePlayer);
     activePlayer = null;
     _gameBoard = [];
     currentPlayers.forEach(player => {
@@ -420,9 +419,38 @@ const displayController = (function() {
     }
   }
 
-  const displayWinner = (player) => {
+  const displayVictoryScreen = (player) => {
+    hideLastScreen();
+    const victoryScreen = template.getElementById('victory').cloneNode(true);
+    lastScreen = victoryScreen;
+    menuContainer.appendChild(victoryScreen);
+    victoryScreen.querySelector('#congratulations').textContent = `CONGRATULATIONS ${player.name.toUpperCase()}.`;
+    victoryScreen.querySelector('.container > h3').textContent = `${player.name}`;
+    const playerCard = victoryScreen.querySelector('.player-icon');
+    playerCard.classList.add(`player-color-${player.color}`);
+    playerCard.querySelector('img').src = `./assets/${player.avatar}.jpg`;
+    playerCard.querySelector('.player-marker-background').appendChild(markers[
+      player.marker].cloneNode(true)); 
+    setTimeout(()=> {
+      victoryScreen.querySelectorAll('.menu-header').forEach((element) => {
+        animateRemoveElement(element, 500);
+      })
+      playerCard.classList.add('animate');
+      victoryScreen.querySelector('.trophy').classList.add('animate');
+    }, 2500)
+    document.getElementById('rematch-button-container').querySelector(
+        'button[name="rematch"]').addEventListener('click', () => {
+          gameController.startGame()});
+    document.getElementById('rematch-button-container').querySelector(
+        'button[name="main-menu"]').addEventListener('click', () => {
+          displayMainMenu()});
+    playerCard.addEventListener('animationend', () => {
+      document.getElementById('rematch-button-container').classList.remove('hidden');
+      victoryScreen.querySelector('.container > h3').classList.remove('hidden');
+      playerCard.querySelector('.medal').classList.remove('hidden');
+    }, {capture: true,})
 
-  }
+    }
 
   const stopTurnTimer = () => {
     clearInterval(_turnTimerID);
@@ -438,6 +466,14 @@ const displayController = (function() {
 
   const displayLeaderboard = () => {
 
+  }
+
+  const animateRemoveElement = (element, duration) => {
+    console.dir(element)
+    element.animate({
+      opacity: '0'
+    }, duration);
+    setTimeout(() => element.remove(), duration);
   }
 
   const displayGameTitle = () => {
@@ -458,9 +494,18 @@ const displayController = (function() {
     _gameBoard = boardDiv;
   }
 
-  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers, displayTurnTimer, stopTurnTimer, displayWinner}
+  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers, displayTurnTimer, stopTurnTimer, displayVictoryScreen}
 })();
 
-displayController.displayMainMenu();
+// displayController.displayVictoryScreen();
+
+// displayController.displayMainMenu();
 
 // displayController.displayTurnTimer(5000);
+displayController.displayVictoryScreen(
+{
+  "name": "awdawd",
+  "avatar": "avatar4",
+  "marker": "circle",
+  "color": "a"
+})
