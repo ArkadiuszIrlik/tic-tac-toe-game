@@ -1,3 +1,4 @@
+'use strict'
 const Player = function(name, avatar) {
   let _winCounter = 0;
   const addWin = () => ++_winCounter;
@@ -17,11 +18,11 @@ const gameController = (function () {
     columns: 3,
     rows: 3,
     winningStreak: 3,
-    turnTimer: Infinity,
+    turnTimer: 5000,
   }
 
   let _gameBoard;
-  let currentPlayers = [];
+  let _currentPlayers = [];
   let activePlayer;
   let _turnCounter = 0;
   let _turnTimerID;
@@ -59,7 +60,7 @@ const gameController = (function () {
       _assignRandomMarkers();  
       _assignRandomColors();
     }
-    activePlayer = currentPlayers[Math.floor(Math.random() * 2)];
+    activePlayer = _currentPlayers[Math.floor(Math.random() * 2)];
     displayController.displayPreGameScreen();
     setTimeout(() => {
       displayController.displayGameScreen(_gameParameters.turnTimer);
@@ -90,8 +91,8 @@ const gameController = (function () {
   }
 
   const _changeActivePlayer = () => {
-    activePlayer = (activePlayer == currentPlayers[0]) ? 
-        currentPlayers[1] : currentPlayers[0];
+    activePlayer = (activePlayer == _currentPlayers[0]) ? 
+        _currentPlayers[1] : _currentPlayers[0];
   }
 
   const _startTurnTimer = () => {
@@ -116,7 +117,7 @@ const gameController = (function () {
   }
 
   const resetPlayers = () => {
-    currentPlayers = [];
+    _currentPlayers = [];
   }
 
   const _isWinner = () => {
@@ -208,7 +209,11 @@ const gameController = (function () {
   }
 
   const addPlayer = (player) => {
-    currentPlayers.push(player);
+    _currentPlayers.push(player);
+  }
+
+  const getCurrentPlayers = () => {
+    return _currentPlayers;
   }
 
   const _failPlayerTimeout = () => {
@@ -219,20 +224,20 @@ const gameController = (function () {
 
   const _assignRandomMarkers = () => {
     const availableMarkers = ['cross', 'circle'];
-    currentPlayers[0].marker = availableMarkers.splice(
+    _currentPlayers[0].marker = availableMarkers.splice(
       Math.floor(Math.random() * 2), 1)[0];
-    currentPlayers[1].marker = availableMarkers[0];
+    _currentPlayers[1].marker = availableMarkers[0];
   }
 
   const _assignRandomColors = () => {
     const availableColors = ['a', 'b'];
-    currentPlayers[0].color = availableColors.splice(
+    _currentPlayers[0].color = availableColors.splice(
       Math.floor(Math.random() * availableColors.length), 1)[0];
-    currentPlayers[1].color = availableColors.splice(
+    _currentPlayers[1].color = availableColors.splice(
       Math.floor(Math.random() * availableColors.length), 1)[0];
   }
 
-  return {startGame, addPlayer, currentPlayers};
+  return {startGame, resetPlayers, addPlayer, getCurrentPlayers};
 })();
 
 const displayController = (function() {
@@ -266,7 +271,7 @@ const displayController = (function() {
     lastScreen = addPlayerScreen;
     menuContainer.appendChild(addPlayerScreen);
     addPlayerScreen.querySelector('h1').textContent = `PLAYER ${
-      gameController.currentPlayers.length + 1}`;
+      gameController.getCurrentPlayers().length + 1}`;
     addPlayerScreen.querySelector('button[name="log-in"]').addEventListener('click',
         displayLogInScreen);
     addPlayerScreen.querySelector('button[name="create-profile"]').addEventListener('click',
@@ -283,7 +288,7 @@ const displayController = (function() {
     lastScreen = createProfileScreen;
     menuContainer.appendChild(createProfileScreen);
     createProfileScreen.querySelector('h1').textContent = `PLAYER ${
-      gameController.currentPlayers.length + 1}`;
+      gameController.getCurrentPlayers().length + 1}`;
     createProfileScreen.querySelector('button[name="finish"]').addEventListener('click',
         createProfile);
   }
@@ -311,7 +316,7 @@ const displayController = (function() {
       gameController.addPlayer(Player(usernameInput.value, avatarSelection.value));
       usernameInput.value = '';
       avatarSelection.checked = false;
-      if (gameController.currentPlayers.length == 1) {
+      if (gameController.getCurrentPlayers().length == 1) {
         displayAddPlayerScreen();
       } else {
         gameController.startGame();
@@ -327,7 +332,7 @@ const displayController = (function() {
     menuContainer.appendChild(preGameScreen);
     const playerCards = preGameScreen.querySelectorAll('.player-card');
     playerCards.forEach((card, index) => {
-      const currentPlayer = gameController.currentPlayers[index];
+      const currentPlayer = gameController.getCurrentPlayers()[index];
       card.classList.add(`player-color-${currentPlayer.color}`);
       card.querySelector('img').src = `./assets/${currentPlayer.avatar}.jpg`;
       card.querySelector('.player-marker-background').appendChild(markers[
@@ -344,7 +349,7 @@ const displayController = (function() {
     const centerContainer = gameScreen.querySelector('.center-container');
     centerContainer.insertBefore(_gameBoard, centerContainer.querySelector('.turn-timer'));
     gameScreen.querySelectorAll('.player-tab').forEach((tab, index) => {
-      const currentPlayer = gameController.currentPlayers[index];
+      const currentPlayer = gameController.getCurrentPlayers()[index];
       tab.classList.add(`player-color-${currentPlayer.color}`);
       tab.querySelector('.player-icon > img').src = `./assets/${currentPlayer.avatar}.jpg`;
       tab.querySelector('.player-marker-background').appendChild(markers[
@@ -473,7 +478,6 @@ const displayController = (function() {
   }
 
   const animateRemoveElement = (element, duration) => {
-    console.dir(element)
     element.animate({
       opacity: '0'
     }, duration);
