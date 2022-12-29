@@ -530,8 +530,7 @@ input[type="radio"]:checked+label {
 #victory .player-icon {
   max-width: 150px;
   max-height: 150px;
-  margin-top: 45vh;
-  margin-left: 120%;
+  margin: 45vh 0 0 240%;
   animation: profile-icon-move-to-top 3s ease-in-out forwards;
   animation-play-state: paused;
 }
