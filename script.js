@@ -112,6 +112,7 @@ const gameController = (function () {
     displayController.displayVictoryScreen(activePlayer);
     activePlayer = null;
     _gameBoard = [];
+    _turnCounter = 0;
   }
 
   const resetPlayers = () => {
