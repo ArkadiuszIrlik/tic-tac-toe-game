@@ -415,6 +415,10 @@ input[type="radio"]:checked+label {
   padding: 15%;
 }
 
+.board-square.active:hover {
+  background-color: #a7a7a7;
+}
+
 .board-square > .marker {
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.35));
 }
