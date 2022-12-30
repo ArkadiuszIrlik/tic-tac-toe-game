@@ -84,10 +84,9 @@ const gameController = (function () {
     event.target.classList.remove('active');
     if (_isWinner()) {
       _endGame();
-    } else {
-      if (_turnCounter == (_gameParameters.columns * _gameParameters.rows)) {
+    } else if (_turnCounter == (_gameParameters.columns * _gameParameters.rows)) {
         _endGame({isTie: true});
-      }
+    } else {
       _changeActivePlayer();
       _startNewTurn();
     }
