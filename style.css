@@ -329,14 +329,8 @@ input[type="radio"]:checked+label {
 }
 
 .center-container {
-  /* width: 35%; */
-  /* background-color: rgba(0, 0, 0, 0.71); */
-  /* margin: 0 auto; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* padding-top: 20vh; */
+  display: grid;
+  grid-template-rows: 1fr max-content 1fr;
 }
 
 .right-container {
@@ -397,8 +391,17 @@ input[type="radio"]:checked+label {
   stroke-width: 15%;
 }
 
+#game .center-container > .container {
+  grid-area: 2 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
 .board-container {
-  /* background-color: rgb(112, 25, 25); */
   width: 30vw;
   height: 30vw;
   display: grid;
@@ -408,7 +411,6 @@ input[type="radio"]:checked+label {
 
 .board-square {
   background-color: #CBCBCB;
-  /* background-color: var(--color-off-white); */
   border-radius: 10px;
   padding: 15%;
 }
@@ -423,7 +425,6 @@ input[type="radio"]:checked+label {
   background-color: #CBCBCB;
   border-radius: 5px;
   margin-top: 50px;
-  /* padding: 18px 20px; */
   display: flex;
   align-items: center;
   padding: 0 20px;
@@ -467,6 +468,13 @@ input[type="radio"]:checked+label {
   --time-left-30: #FFB607;
   --time-left-20: #FE9410;
   --time-left-10: #E43337;
+}
+
+#game .timeout-message {
+  grid-area: 3 / 1;
+  text-align: center;
+  margin-top: 2vh;
+  animation: smooth-appear 0.2s ease-in-out;
 }
 
 .current-player {
@@ -524,7 +532,7 @@ input[type="radio"]:checked+label {
   font-family: Barlow, sans-serif;
   color: white;
   font-size: 26px;
-  animation: rematch-buttons-appear 1.5s ease-in-out;
+  animation: smooth-appear 1.5s ease-in-out;
 }
 
 #victory .player-icon {
@@ -565,10 +573,10 @@ input[type="radio"]:checked+label {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  animation: rematch-buttons-appear 1.5s ease-in-out;
+  animation: smooth-appear 1.5s ease-in-out;
 }
 
-@keyframes rematch-buttons-appear {
+@keyframes smooth-appear {
   100% {
     opacity: 1;
   }

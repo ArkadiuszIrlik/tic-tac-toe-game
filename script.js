@@ -85,6 +85,9 @@ const gameController = (function () {
     if (_isWinner()) {
       _endGame();
     } else {
+      if (_turnCounter == (_gameParameters.columns * _gameParameters.rows)) {
+        alert('tie');
+      }
       _changeActivePlayer();
       _startNewTurn();
     }
@@ -219,7 +222,7 @@ const gameController = (function () {
   const _failPlayerTimeout = () => {
     displayController.displayPlayerTimeout();
     _changeActivePlayer();
-    _endGame();
+    setTimeout(_endGame, 3000);
   }
 
   const _assignRandomMarkers = () => {
@@ -346,8 +349,8 @@ const displayController = (function() {
     const gameScreen = template.getElementById('game').cloneNode(true);
     lastScreen = gameScreen;
     menuContainer.appendChild(gameScreen);
-    const centerContainer = gameScreen.querySelector('.center-container');
-    centerContainer.insertBefore(_gameBoard, centerContainer.querySelector('.turn-timer'));
+    const container = gameScreen.querySelector('.center-container > .container');
+    container.insertBefore(_gameBoard, container.querySelector('.turn-timer'));
     gameScreen.querySelectorAll('.player-tab').forEach((tab, index) => {
       const currentPlayer = gameController.getCurrentPlayers()[index];
       tab.classList.add(`player-color-${currentPlayer.color}`);
@@ -470,7 +473,8 @@ const displayController = (function() {
   }
 
   const displayPlayerTimeout = () => {
-    // alert('timed out');
+    document.getElementById('game').querySelector('.timeout-message')
+      .classList.remove('hidden');
   }
 
   const displayLeaderboard = () => {
