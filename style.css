@@ -586,3 +586,22 @@ input[type="radio"]:checked+label {
     opacity: 0;
   }
 }
+
+#draw {
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr max-content 1fr;
+  place-items: center;
+}
+
+#draw .menu-header {
+  /* align-self: end; */
+  margin-top: 15vh;
+  grid-area: 1 / 1;
+  animation: smooth-appear 1.5s ease-in-out;
+}
+
+#draw #rematch-button-container {
+  grid-area: 2 / 1;
+  margin: 0;
+}

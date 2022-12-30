@@ -86,7 +86,7 @@ const gameController = (function () {
       _endGame();
     } else {
       if (_turnCounter == (_gameParameters.columns * _gameParameters.rows)) {
-        alert('tie');
+        _endGame({isTie: true});
       }
       _changeActivePlayer();
       _startNewTurn();
@@ -111,9 +111,13 @@ const gameController = (function () {
     clearTimeout(_turnTimerID);
   }
 
-  const _endGame = () => {
-    activePlayer.addWin();
-    displayController.displayVictoryScreen(activePlayer);
+  const _endGame = ({isTie = false} = {}) => {
+    if (isTie) {
+      displayController.displayDrawScreen();
+    } else {
+      activePlayer.addWin();
+      displayController.displayVictoryScreen(activePlayer);
+    }
     activePlayer = null;
     _gameBoard = [];
     _turnCounter = 0;
@@ -464,7 +468,21 @@ const displayController = (function() {
       playerCard.querySelector('.medal').classList.remove('hidden');
     }, {capture: true,})
 
-    }
+  }
+
+  const displayDrawScreen = () => {
+    hideLastScreen();
+    const drawScreen = template.getElementById('draw').cloneNode(true);
+    lastScreen = drawScreen;
+    menuContainer.appendChild(drawScreen);
+    document.getElementById('rematch-button-container').querySelector(
+      'button[name="rematch"]').addEventListener('click', () => {
+        gameController.startGame({isRematch: true})});
+    document.getElementById('rematch-button-container').querySelector(
+        'button[name="main-menu"]').addEventListener('click', () => {
+          gameController.resetPlayers();
+          displayMainMenu()});
+  }
 
   const stopTurnTimer = () => {
     clearInterval(_turnTimerID);
@@ -511,7 +529,7 @@ const displayController = (function() {
     _gameBoard = boardDiv;
   }
 
-  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers, displayTurnTimer, stopTurnTimer, displayVictoryScreen}
+  return {displayMainMenu, displayAddPlayerScreen, displayPreGameScreen, displayGameScreen, addBoard, displayNewTurn, displayPlayerTimeout, markers, displayTurnTimer, stopTurnTimer, displayVictoryScreen, displayDrawScreen}
 })();
 
 // displayController.displayVictoryScreen();
