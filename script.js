@@ -128,17 +128,19 @@ const gameController = (function () {
       for (let row = 0; row < _gameBoard.length; row++) {
         let currentStreak = 0;
         let previousMarker = _gameBoard[row][0];
-        _gameBoard[row].forEach(square => {
+        for (let i = 0; i < _gameBoard[row].length; i++) {
+          const square = _gameBoard[row][i];
           if (square.dataset.marker == previousMarker && previousMarker != '') {
             currentStreak++;
             if (currentStreak == _gameParameters.winningStreak) {
+              console.log('win in row' + (row + 1))
               return true;
             }   
           } else {
             currentStreak = 1;
             previousMarker = square.dataset.marker;
           }
-        })
+        }
       }
       return false;
     }

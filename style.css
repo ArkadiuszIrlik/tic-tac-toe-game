@@ -399,8 +399,6 @@ input[type="radio"]:checked+label {
   align-items: center;
 }
 
-
-
 .board-container {
   width: 30vw;
   height: 30vw;
